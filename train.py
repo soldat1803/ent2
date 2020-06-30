@@ -162,6 +162,7 @@ callbacks_list = [checkpoint]
 epoch = [10,20,30,40,50,80,100]
 units = [32,64,128,256,512]
 lr=[0.0002,0.0003,0.0004,0.0008,0.001,0.002,0.003,0.006,0.01,0.02,0.03,0.04,0.05]
+filepath="modelweightsfinal.hdf5"
 list_opt=[optimizers.Adam,optimizers.RMSprop,optimizers.Adagrad,optimizers.Adamax,optimizers.Nadam,optimizers.SGD]
 
 
@@ -176,52 +177,9 @@ for e in epoch:
                 model = train(u,lst,lr)
                 model_history = model.fit([tX, tXq], [tYBegin, tYEnd],batch_size= 128, verbose=1,
                           callbacks = callbacks_list,epochs=30)
-
-
-# In[14]:
-
-
-
-
-
-# In[15]:
-
-
-
-
-
-# In[16]:
-
-
-
-
-
-# In[17]:
-
-
-
-
-
-# In[18]:
-
-
-
-
-
-# In[19]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
+                
+model_json = model.to_json()
+with open("model_final.json", "w") as json_file:
+    json_file.write(model_json)
+# serialize weights to HDF5
+model.save_weights("model_final.h5")
