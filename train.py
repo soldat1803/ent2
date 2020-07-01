@@ -34,7 +34,7 @@ from attention import Attention
 
 
 embeddings_index = {}
-f = open('glove/glove.6B.100d.txt',encoding="utf8")
+f = open('glove.6B.100d.txt',encoding="utf8")
 for line in f:
     values = line.split()
     word = values[0]
@@ -46,6 +46,8 @@ print('Found %s word vectors.' % len(embeddings_index))
 
 
 # In[3]:
+from google.colab import drive
+drive.mount('/content/drive')
 
 
 with open('data/train-v2.0.json') as json_data:
@@ -169,7 +171,7 @@ list_opt=[optimizers.Adam]
 
 
             
-model = train(u,lst,lr)
+model = train(units,lst,lr)
 model_history = model.fit([tX, tXq], [tYBegin, tYEnd],batch_size= 128, verbose=1,callbacks = callbacks_list,epochs=30)
                 
 model_json = model.to_json()
