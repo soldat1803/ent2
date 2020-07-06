@@ -47,7 +47,7 @@ print('Found %s word vectors.' % len(embeddings_index))
 
 # In[3]:
 from google.colab import drive
-drive.mount('/content/drive')
+drive.mount('/content/gdrive')
 
 
 with open('data/train-v2.0.json') as json_data:
@@ -153,7 +153,7 @@ def train(units,opt,lr):
 
 
 train_slice = 10000
-filepath="modelweightsfinal.hdf5"
+filepath="gdrive/My Drive/MyCNN/epochs:{epoch:02d}.hdf5"
 checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
 callbacks_list = [checkpoint]
 
@@ -161,17 +161,16 @@ callbacks_list = [checkpoint]
 # In[53]:
 
 
-units = [128]
-lr=[0.0005]
-filepath="modelweightsfinal.hdf5"
-list_opt=[optimizers.Adam]
+units = 128
+lr=0.0005
+list_opt=optimizers.Adam
 
 
 # In[54]:
 
 
             
-model = train(units,lst,lr)
+model = train(units,list_opt,lr)
 model_history = model.fit([tX, tXq], [tYBegin, tYEnd],batch_size= 128, verbose=1,callbacks = callbacks_list,epochs=30)
                 
 model_json = model.to_json()
