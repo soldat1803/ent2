@@ -142,7 +142,8 @@ def train(units,opt,lr):
     Lmerge = concatenate([L, answerPtrBegin_output],axis = 1)
     answerPtrEnd_output = Dense(context_maxlen, activation='softmax')(Lmerge)
     model = Model(input=[context_input, question_input], output=[answerPtrBegin_output, answerPtrEnd_output])
-    am = opt(lr=0.0002)
+    am = opt(lr=0.0005)
+    model.load_weights('gdrive/epochs:07.hdf5')
     model.compile(optimizer=am, loss='categorical_crossentropy',loss_weights=[.04, 0.04], metrics=['accuracy'])
     model.summary()
     return model
@@ -153,7 +154,7 @@ def train(units,opt,lr):
 
 
 train_slice = 10000
-filepath="gdrive/My Drive/MyCNN/epochs:{epoch:02d}.hdf5"
+filepath="gdrive/My Drive/epochs:{epoch:02d}.hdf5"
 checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
 callbacks_list = [checkpoint]
 
@@ -171,6 +172,7 @@ list_opt=optimizers.Adam
 
             
 model = train(units,list_opt,lr)
+
 model_history = model.fit([tX, tXq], [tYBegin, tYEnd],batch_size= 128, verbose=1,callbacks = callbacks_list,epochs=30)
                 
 model_json = model.to_json()
